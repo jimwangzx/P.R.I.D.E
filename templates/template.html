@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      body{
+      height:100%;
+      margin:0;
+      }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/template.css') }}">
+
+  </head>
+  <body>
+    
+  <div id="nav_bar">
+    <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+    </ul>
+  </div>
+
+
+  {% block content %}
+  {% endblock %}
+
+  </body>
+</html>

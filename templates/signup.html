@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>WikiFe</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/template.css') }}">
+  </head>
+  <body class="home_body">
+    {% extends "template.html" %}
+    {% block content %}
+    <h1>Create an account</h1>
+    <form name="signup_form">
+        
+        <label for="name">Name</label>
+        <input type="text" name="name" class="field" required>
+        
+        <label for="name">Email</label>
+        <input type="email" name="email" class="field" required>
+        
+        <label for="name">Password</label>
+        <input type="password" name="password" class="field" required>
+        
+        <input type="Submit" value="Sign Up" class="btn" required>
+
+        <p><a href="signin">Already an user ? Login</a></p>
+    {% endblock %}
+  </body>
+</html>
