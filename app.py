@@ -1,10 +1,12 @@
 from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
+import hashlib
+from passlib.hash import pbkdf2_sha256
 
 app=Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User Credentials'
 
 db=SQLAlchemy(app)
 
@@ -43,7 +45,10 @@ def signup():
         user_email=request.form['email']
         user_pass=request.form['password']
 
-        collected_data=User(user_name, user_email, user_pass)
+        user_email=pbkdf2_sha256.hash(user_email)
+        user_password=pbkdf2_sha256.hash(user_pass)
+
+        collected_data=User(user_name, user_email, user_password)
         db.session.add(collected_data)
         db.session.commit()
         return render_template('signup.html')
