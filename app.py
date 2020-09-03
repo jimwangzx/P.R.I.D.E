@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 import hashlib
 from passlib.hash import pbkdf2_sha256
+import socket
 
 app=Flask(__name__)
 
@@ -21,6 +22,11 @@ class User(db.Model):
         self.name=name
         self.email=email
         self.password=password
+
+def getip():
+    hostname=socket.gethostname()
+    global ip
+    ip=socket.gethostbyname(hostname)
 
 @app.route('/')
 def home():
@@ -43,7 +49,10 @@ def signup():
     if request.method=='POST':
         user_name=request.form['name']
         user_email=request.form['email']
-        user_pass=request.form['password']
+        user_passw=request.form['password']
+
+        getip()
+        user_pass=str(ip)+user_passw
 
         user_email=pbkdf2_sha256.hash(user_email)
         user_password=pbkdf2_sha256.hash(user_pass)
