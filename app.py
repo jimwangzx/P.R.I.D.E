@@ -60,9 +60,11 @@ def signup():
         collected_data=User(user_name, user_email, user_password)
         db.session.add(collected_data)
         db.session.commit()
-        return render_template('signup.html')
+        message="You have successfully signed up !"
+        return render_template('result.html', message=message)
     else:
-        return render_template('signup.html')
+        message="Sign Up failed. Try again"
+        return render_template('result.html', message=message)
 
 if __name__=="__main__":
     db.create_all()
