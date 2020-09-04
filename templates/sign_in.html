@@ -8,22 +8,18 @@
   <body class="home_body">
     {% extends "template.html" %}
     {% block content %}
-    <h1>Create an account</h1>
-    <form name="signup_form" method="POST">
-        
-        <label for="name">Name</label>
-        <input type="text" name="name" class="field" required>
-        
+    <h1>Sign In</h1>
+    <form name="signup_form">
         <label for="name">Email</label>
         <input type="email" name="email" class="field" required>
         
+        <input type="Submit" value="Check" required>    
         <label for="name">Password</label>
         <input type="password" name="password" class="field" required>
         
         <input type="Submit" value="Sign Up" class="btn" required>
-
-        <p><a href="sign_in">Already an user ? Login</a></p>
     </form>
+    <p><a href="signup">New User ? Sign Up.</a></p>
 
     {% endblock %}
   </body>

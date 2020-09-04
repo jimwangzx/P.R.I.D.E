@@ -32,9 +32,9 @@ def getip():
 def home():
     return render_template('home.html')
 
-@app.route('/signin')
+@app.route('/sign_in')
 def singin():
-    return render_template('signin.html')
+    return render_template('sign_in.html')
 
 @app.route('/users')
 def users():
