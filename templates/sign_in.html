@@ -9,15 +9,16 @@
     {% extends "template.html" %}
     {% block content %}
     <h1>Sign In</h1>
-    <form name="signup_form">
+    <form name="signup_form" method="POST">
         <label for="name">Email</label>
         <input type="email" name="email" class="field" required>
+        <h2>{{ message }}</h2>
         
         <input type="Submit" value="Check" required>    
         <label for="name">Password</label>
-        <input type="password" name="password" class="field" required>
+        <input type="password" name="password" class="field">
         
-        <input type="Submit" value="Sign Up" class="btn" required>
+        <input type="Submit" value="Sign Up" class="btn">
     </form>
     <p><a href="signup">New User ? Sign Up.</a></p>
 
