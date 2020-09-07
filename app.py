@@ -32,8 +32,20 @@ def getip():
 def home():
     return render_template('home.html')
 
-@app.route('/sign_in')
+@app.route('/sign_in', methods=['GET', 'POST'])
 def singin():
+    if request.method=='POST':
+        user_email=request.form['email']
+        check=User.query.filter_by(email=user_email).first()
+        if check is None:
+            return render_template('sign_in.html', message="No such email id")
+        else:
+            return render_template('sign_in.html', message="Email exists. Proceed")
+    else:
+        return render_template('sign_in.html')
+
+
+
     return render_template('sign_in.html')
 
 @app.route('/users')
@@ -54,7 +66,6 @@ def signup():
         getip()
         user_pass=str(ip)+user_passw
 
-        user_email=pbkdf2_sha256.hash(user_email)
         user_password=pbkdf2_sha256.hash(user_pass)
 
         collected_data=User(user_name, user_email, user_password)
