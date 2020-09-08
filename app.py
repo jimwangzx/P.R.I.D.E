@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import hashlib
 from passlib.hash import pbkdf2_sha256
 import socket
+from identicons import *
 
 app=Flask(__name__)
 
@@ -40,7 +41,12 @@ def singin():
         if check is None:
             return render_template('sign_in.html', message="No such email id")
         else:
-            return render_template('sign_in.html', message="Email exists. Proceed")
+            found_user_email = check.email
+            found_user_pass = check.password
+            generate_identicon(found_user_pass, found_user_email)
+
+            return render_template('sign_in.html', message="Email exists. Proceed", filename=found_user_email+".png")
+
     else:
         return render_template('sign_in.html')
 
