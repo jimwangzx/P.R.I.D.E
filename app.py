@@ -4,11 +4,15 @@ import hashlib
 from passlib.hash import pbkdf2_sha256
 import socket
 from identicons import *
+import os
+
+location = os.path.join('static','identicons')
 
 app=Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User Credentials'
+app.config['upload']=location
 
 db=SQLAlchemy(app)
 
@@ -34,7 +38,7 @@ def home():
     return render_template('home.html')
 
 @app.route('/sign_in', methods=['GET', 'POST'])
-def singin():
+def signin():
     if request.method=='POST':
         user_email=request.form['email']
         check=User.query.filter_by(email=user_email).first()
@@ -43,9 +47,10 @@ def singin():
         else:
             found_user_email = check.email
             found_user_pass = check.password
-            generate_identicon(found_user_pass, found_user_email)
-
-            return render_template('sign_in.html', message="Email exists. Proceed", filename=found_user_email+".png")
+            full_location = os.path.join(app.config['upload'], found_user_email)
+            generate_identicon(found_user_pass, found_user_email, full_location)
+            image_address="/"+full_location+".png"
+            return render_template('sign_in.html', message="Email exists. Proceed", address=image_address)
 
     else:
         return render_template('sign_in.html')
