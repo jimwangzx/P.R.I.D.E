@@ -73,17 +73,18 @@ def signup():
         user_name=request.form['name']
         user_email=request.form['email']
         user_passw=request.form['password']
-
-        getip()
-        user_pass=str(ip)+user_passw
-
-        user_password=pbkdf2_sha256.hash(user_pass)
-
-        collected_data=User(user_name, user_email, user_password)
-        db.session.add(collected_data)
-        db.session.commit()
-        message="You have successfully signed up !"
-        return render_template('result.html', message=message)
+        check=User.query.filter_by(email=user_email).first()
+        if check is not None:
+            return render_template('signup.html', message="This email already exists")
+        else:
+            getip()
+            user_pass=str(ip)+user_passw
+            user_password=pbkdf2_sha256.hash(user_pass)
+            collected_data=User(user_name, user_email, user_password)
+            db.session.add(collected_data)
+            db.session.commit()
+            message="You have successfully signed up !"
+            return render_template('result.html', message=message)
     else:
         message="Sign Up failed. Try again"
         return render_template('result.html', message=message)
