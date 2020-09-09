@@ -8,6 +8,7 @@
   <body class="home_body">
     {% extends "template.html" %}
     {% block content %}
+
     <h1>Create an account</h1>
     <form name="signup_form" method="POST">
         
@@ -22,6 +23,7 @@
         
         <input type="Submit" value="Sign Up" class="btn" required>
 
+        <h2>{{ message }}</h2>
         <p><a href="sign_in">Already an user ? Login</a></p>
     </form>
 
