@@ -13,13 +13,16 @@
         <label for="name">Email</label>
         <input type="email" name="email" class="field" required>
         <h2>{{ message }}</h2>
-        
-        <input type="Submit" value="Check" required>    
+
+        <input type="Submit" value="Check" required>
         <label for="name">Password</label>
         <input type="password" name="password" class="field">
-        
+
         <input type="Submit" value="Sign Up" class="btn">
     </form>
+    <p align="center">
+    <img src="{{ address }}" width="200" height="200">
+    </p>
     <p><a href="signup">New User ? Sign Up.</a></p>
     {% endblock %}
   </body>
