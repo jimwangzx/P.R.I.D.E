@@ -33,6 +33,11 @@ def getip():
     global ip
     ip=socket.gethostbyname(hostname)
 
+def getsalt(password):
+    salt_used=found_user_pass[21:43]
+    salt_decoded=passlib.utils.binary.ab64_decode(salt_used)
+    return salt_decoded
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -47,10 +52,11 @@ def signin():
         else:
             found_user_email = check.email
             found_user_pass = check.password
+            getsalt(found_user_pass)
             full_location = os.path.join(app.config['upload'], found_user_email)
             generate_identicon(found_user_pass, found_user_email, full_location)
             image_address="/"+full_location+".png"
-            return render_template('sign_in.html', message="Email exists. Proceed", address=image_address)
+            return render_template('sign_in2.html', message="Email exists. Proceed", address=image_address)
 
     else:
         return render_template('sign_in.html')
