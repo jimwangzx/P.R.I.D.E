@@ -8,7 +8,7 @@
   
 <h2>Comments</h2> 
 <p> There are a lot of challenges in actually implementing it securely without any flaws. I have already come across some of them. Something is definitely wrong, but can't yet figure it out.</p>
-<p>As of now, this is just a small hobby project</p>
+<p>As of now, this is just a small hobby project.</p>
 
 
 
