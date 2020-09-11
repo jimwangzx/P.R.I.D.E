@@ -1,10 +1,11 @@
 from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
-import hashlib
 from passlib.hash import pbkdf2_sha256
 import socket
 from identicons import *
 import os
+import passlib
+from user_side import *
 
 location = os.path.join('static','identicons')
 
@@ -34,9 +35,11 @@ def getip():
     ip=socket.gethostbyname(hostname)
 
 def getsalt(password):
-    salt_used=found_user_pass[21:43]
+    salt_used=password[21:43]
     salt_decoded=passlib.utils.binary.ab64_decode(salt_used)
     return salt_decoded
+
+
 
 @app.route('/')
 def home():
@@ -52,7 +55,8 @@ def signin():
         else:
             found_user_email = check.email
             found_user_pass = check.password
-            getsalt(found_user_pass)
+            salt_bytes=getsalt(found_user_pass)
+            get_user_cred(salt_bytes)
             full_location = os.path.join(app.config['upload'], found_user_email)
             generate_identicon(found_user_pass, found_user_email, full_location)
             image_address="/"+full_location+".png"
