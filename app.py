@@ -1,19 +1,20 @@
 from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
+import passlib
 from passlib.hash import pbkdf2_sha256
 import socket
-from identicons import *
 import os
-import passlib
-from user_side import *
+from identicons import *
 
 location = os.path.join('static','identicons')
+location2 = os.path.join('static','identicons_user_side')
 
 app=Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User Credentials'
 app.config['upload']=location
+app.config['upload_user_side']=location2
 
 db=SQLAlchemy(app)
 
@@ -31,15 +32,19 @@ class User(db.Model):
 
 def getip():
     hostname=socket.gethostname()
-    global ip
     ip=socket.gethostbyname(hostname)
+    return ip
 
 def getsalt(password):
     salt_used=password[21:43]
     salt_decoded=passlib.utils.binary.ab64_decode(salt_used)
     return salt_decoded
 
-
+def get_user_cred(given_salt, given_pass):
+    ip=getip()
+    user_pass=str(ip)+given_pass
+    hash=pbkdf2_sha256.using(salt=given_salt).hash(user_pass)
+    return hash
 
 @app.route('/')
 def home():
@@ -56,22 +61,20 @@ def signin():
             found_user_email = check.email
             found_user_pass = check.password
             salt_bytes=getsalt(found_user_pass)
-            get_user_cred(salt_bytes)
+            #passo=""
+            #emailo=""
+            hashed_user_side=get_user_cred(salt_bytes,passo)
             full_location = os.path.join(app.config['upload'], found_user_email)
+            full_location2 = os.path.join(app.config['upload_user_side'], emailo)
             generate_identicon(found_user_pass, found_user_email, full_location)
             image_address="/"+full_location+".png"
-            return render_template('sign_in2.html', message="Email exists. Proceed", address=image_address)
+            generate_identicon(hashed_user_side,emailo,full_location2)
+            image_address2="/"+full_location2+".png"
+            return render_template('sign_in2.html', message="", address=image_address, address2=image_address2)
 
     else:
         return render_template('sign_in.html')
-
-
-
     return render_template('sign_in.html')
-
-@app.route('/users')
-def users():
-    return render_template('users.html')
 
 @app.route('/signup')
 def signup_load():
@@ -87,7 +90,7 @@ def signup():
         if check is not None:
             return render_template('signup.html', message="This email already exists")
         else:
-            getip()
+            ip=getip()
             user_pass=str(ip)+user_passw
             user_password=pbkdf2_sha256.hash(user_pass)
             collected_data=User(user_name, user_email, user_password)
