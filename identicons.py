@@ -1,6 +1,5 @@
 import pydenticon
 from app import *
-import os
 
 generator=pydenticon.Generator(5,5)
 
