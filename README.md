@@ -9,7 +9,7 @@
   </p>
 
 <br>
-<p> As a matter of fact, GitHub uses identicons as profile pictures by default based on the username of users.</p>
+<p> As a matter of fact, GitHub uses identicons as profile pictures by default based on the username of users. Since no two users have the same username, every user has a unique identicon.</p>
 <p> <a href="https://github.com/donpark">Don Park</a> came up with the idea of using identicons to prevent phishing in 2007 in his blog <a href="https://web.archive.org/web/20080510221519/http://www.docuverse.com/blog/donpark/2007/01/22/identicon-based-anti-phishing-protection">post</a>.
   
 <p> This project implementation is inspired from that idea. I would like to tout this as an alternate way to sign in to websites to safeguad against phishing attempts. Everyday, we log in to multiple websites, whether it is for e-mail, news feeds, games or social media sites. There is always a risk that the webpage that loads could have been compromised by an attacker as part of a MiTM attack or a general phishing scheme and hence the danger of your accounts being compromised without you even knowing it. </p>
