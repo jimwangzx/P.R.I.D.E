@@ -13,13 +13,31 @@ app=Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User Credentials'
+app.config['SQLALCHEMY_BINDS'] = {
+    'db': 'sqlite:///User Credentials',
+    'db1': 'sqlite:///User Credentials_ Browser side'
+}
 app.config['upload']=location
 app.config['upload_user_side']=location2
 
 db=SQLAlchemy(app)
 
 class User(db.Model):
+    __bind_key__='db'
     __tablename__="User details"
+    _id=db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name=db.Column(db.String(100), nullable=False)
+    email=db.Column(db.String(100), nullable=False)
+    password=db.Column(db.String(500), nullable=False)
+
+    def __init__(self, name, email, password):
+        self.name=name
+        self.email=email
+        self.password=password
+
+class User1(db.Model):
+    __bind_key__='db1'
+    __tablename__="User details - Browser"
     _id=db.Column(db.Integer, primary_key=True, autoincrement=True)
     name=db.Column(db.String(100), nullable=False)
     email=db.Column(db.String(100), nullable=False)
@@ -55,14 +73,15 @@ def signin():
     if request.method=='POST':
         user_email=request.form['email']
         check=User.query.filter_by(email=user_email).first()
+        check1=User1.query.filter_by(email=user_email).first()
         if check is None:
             return render_template('sign_in.html', message="No such email id")
         else:
             found_user_email = check.email
             found_user_pass = check.password
             salt_bytes=getsalt(found_user_pass)
-            #passo=""
-            #emailo=""
+            passo=check1.password
+            emailo=check1.email
             hashed_user_side=get_user_cred(salt_bytes,passo)
             full_location = os.path.join(app.config['upload'], found_user_email)
             full_location2 = os.path.join(app.config['upload_user_side'], emailo)
@@ -94,7 +113,10 @@ def signup():
             user_pass=str(ip)+user_passw
             user_password=pbkdf2_sha256.hash(user_pass)
             collected_data=User(user_name, user_email, user_password)
+            collected_data1=User1(user_name, user_email, user_passw)
             db.session.add(collected_data)
+            db.session.commit()
+            db.session.add(collected_data1)
             db.session.commit()
             message="You have successfully signed up !"
             return render_template('result.html', message=message)
