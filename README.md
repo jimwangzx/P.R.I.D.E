@@ -28,7 +28,7 @@
   <li>SQLAlchemy - 1.3.19</li>
   </ul>
   
-  For the completel list check <a href="requirements.txt">this</a>.</p>
+  For the complete list check <a href="requirements.txt">this</a>.</p>
 
 
 
