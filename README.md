@@ -30,16 +30,18 @@
   
   For the complete list check <a href="requirements.txt">this</a>.</p>
 
-
+<h2>Drawbacks</h2>
+ <p>This implementation does change the user experience. Obviously, humans don't embrace change.</p>
+ <p>Firstly, the user needs to store passwords in the device. Password managers come into the picture. They have gotten more common recently. From what I have seen, people rather depend on the password managers built into the browsers which are rather not that secure.
+</p>
+  
 
 
 
  
   
 <h2>Comments</h2> 
-<p> There are a lot of challenges in actually implementing it securely without any flaws. I have already come across some of them. Something is definitely wrong, but can't yet figure it out.</p>
-<p>As of now, this is just a small hobby project.</p>
-
-
+<p> Something is definitely wrong, but can't yet figure it out.</p>
+<p> As of now, the implementation just shows how the system may work, it doesn't fetch credentials from a password manager to create identicons at the client side. It has proven to be challenging and I won't go that deep unless I am sure this scheme is foolproof. For testing purposes, I created another database which acts as a storage unit for credentials - imitating a password manager.</p>
 
 
