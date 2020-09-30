@@ -42,6 +42,6 @@
   
 <h2>Comments</h2> 
 <p> Something is definitely wrong, but can't yet figure it out.</p>
-<p> As of now, the implementation just shows how the system may work, it doesn't fetch credentials from a password manager to create identicons at the client side. It has proven to be challenging and I won't go that deep unless I am sure this scheme is foolproof. For testing purposes, I created another database which acts as a storage unit for credentials - imitating a password manager.</p>
+<p> As of now, the implementation just shows how the system may work, it doesn't fetch credentials from a password manager to create identicons at the client side. It has proven to be challenging and I won't go that deep unless I am sure this scheme is foolproof. For testing purposes, I created another database which acts as a storage unit for credentials, imitating a password manager.</p>
 
 
