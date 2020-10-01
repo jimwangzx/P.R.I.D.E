@@ -5,6 +5,8 @@ from passlib.hash import pbkdf2_sha256
 import socket
 import os
 from identicons import *
+from totp import *
+from hash import *
 
 location = os.path.join('static','identicons')
 location2 = os.path.join('static','identicons_user_side')
@@ -29,11 +31,13 @@ class User(db.Model):
     name=db.Column(db.String(100), nullable=False)
     email=db.Column(db.String(100), nullable=False)
     password=db.Column(db.String(500), nullable=False)
+    totp=db.Column(db.String(32), nullable=False)
 
-    def __init__(self, name, email, password):
+    def __init__(self, name, email, password, totp):
         self.name=name
         self.email=email
         self.password=password
+        self.totp=totp
 
 class User1(db.Model):
     __bind_key__='db1'
@@ -42,27 +46,13 @@ class User1(db.Model):
     name=db.Column(db.String(100), nullable=False)
     email=db.Column(db.String(100), nullable=False)
     password=db.Column(db.String(500), nullable=False)
+    totp=db.Column(db.String(32), nullable=False)
 
-    def __init__(self, name, email, password):
+    def __init__(self, name, email, password, totp):
         self.name=name
         self.email=email
         self.password=password
-
-def getip():
-    hostname=socket.gethostname()
-    ip=socket.gethostbyname(hostname)
-    return ip
-
-def getsalt(password):
-    salt_used=password[21:43]
-    salt_decoded=passlib.utils.binary.ab64_decode(salt_used)
-    return salt_decoded
-
-def get_user_cred(given_salt, given_pass):
-    ip=getip()
-    user_pass=str(ip)+given_pass
-    hash=pbkdf2_sha256.using(salt=given_salt).hash(user_pass)
-    return hash
+        self.totp = totp
 
 @app.route('/')
 def home():
@@ -74,11 +64,16 @@ def signin():
         user_email=request.form['email']
         check=User.query.filter_by(email=user_email).first()
         check1=User1.query.filter_by(email=user_email).first()
+        found_server_totp_key = check.totp
+        found_server_totp = generate_totp(found_server_totp_key)
+        found_user_totp_key = check1.totp
+        found_user_totp = generate_totp(found_user_totp_key)
         if check is None:
             return render_template('sign_in.html', message="No such email id")
-        else:
+        elif(found_user_totp==found_server_totp):
             found_user_email = check.email
             found_user_pass = check.password
+
             salt_bytes=getsalt(found_user_pass)
             passo=check1.password
             emailo=check1.email
@@ -90,10 +85,10 @@ def signin():
             generate_identicon(hashed_user_side,emailo,full_location2)
             image_address2="/"+full_location2+".png"
             return render_template('sign_in2.html', message="", address=image_address, address2=image_address2)
-
+        else:
+            return render_template('sign_in.html', message="Credentials don't match !")
     else:
         return render_template('sign_in.html')
-    return render_template('sign_in.html')
 
 @app.route('/signup')
 def signup_load():
@@ -109,11 +104,12 @@ def signup():
         if check is not None:
             return render_template('signup.html', message="This email already exists")
         else:
+            totp_key=generate_secret_totp_key()
             ip=getip()
             user_pass=str(ip)+user_passw
             user_password=pbkdf2_sha256.hash(user_pass)
-            collected_data=User(user_name, user_email, user_password)
-            collected_data1=User1(user_name, user_email, user_passw)
+            collected_data=User(user_name, user_email, user_password, totp_key)
+            collected_data1=User1(user_name, user_email, user_passw, totp_key)
             db.session.add(collected_data)
             db.session.commit()
             db.session.add(collected_data1)
