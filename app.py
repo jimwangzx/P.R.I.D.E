@@ -64,29 +64,29 @@ def signin():
         user_email=request.form['email']
         check=User.query.filter_by(email=user_email).first()
         check1=User1.query.filter_by(email=user_email).first()
-        found_server_totp_key = check.totp
-        found_server_totp = generate_totp(found_server_totp_key)
-        found_user_totp_key = check1.totp
-        found_user_totp = generate_totp(found_user_totp_key)
+        try:
+            found_server_totp_key = check.totp
+            found_server_totp = generate_totp(found_server_totp_key)
+            found_user_totp_key = check1.totp
+            found_user_totp = generate_totp(found_user_totp_key)
+        except:
+            return render_template('sign_in.html', message="The account doesn't exist.")
         if check is None:
-            return render_template('sign_in.html', message="No such email id")
+            return render_template('sign_in.html', message="The account doesn't exist.")
         elif(found_user_totp==found_server_totp):
             found_user_email = check.email
             found_user_pass = check.password
-
-            salt_bytes=getsalt(found_user_pass)
             passo=check1.password
             emailo=check1.email
-            hashed_user_side=get_user_cred(salt_bytes,passo)
             full_location = os.path.join(app.config['upload'], found_user_email)
             full_location2 = os.path.join(app.config['upload_user_side'], emailo)
             generate_identicon(found_user_pass, found_user_email, full_location)
             image_address="/"+full_location+".png"
-            generate_identicon(hashed_user_side,emailo,full_location2)
+            generate_identicon(passo,emailo,full_location2)
             image_address2="/"+full_location2+".png"
             return render_template('sign_in2.html', message="", address=image_address, address2=image_address2)
         else:
-            return render_template('sign_in.html', message="Credentials don't match !")
+            return render_template('sign_in.html', message="Credentials don't match ! Something looks fishy")
     else:
         return render_template('sign_in.html')
 
@@ -108,8 +108,10 @@ def signup():
             ip=getip()
             user_pass=str(ip)+user_passw
             user_password=pbkdf2_sha256.hash(user_pass)
+            salt_bytes = getsalt(user_password)
+            user_password_browser_side=get_user_cred(salt_bytes,user_passw)
             collected_data=User(user_name, user_email, user_password, totp_key)
-            collected_data1=User1(user_name, user_email, user_passw, totp_key)
+            collected_data1=User1(user_name, user_email, user_password_browser_side, totp_key)
             db.session.add(collected_data)
             db.session.commit()
             db.session.add(collected_data1)
