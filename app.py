@@ -7,6 +7,7 @@ import os
 from identicons import *
 from totp import *
 from hash import *
+from encrypt import *
 
 location = os.path.join('static','identicons')
 location2 = os.path.join('static','identicons_user_side')
@@ -68,6 +69,7 @@ def signin():
             found_server_totp_key = check.totp
             found_server_totp = generate_totp(found_server_totp_key)
             found_user_totp_key = check1.totp
+            found_user_totp_key=decrypt(found_user_totp_key)
             found_user_totp = generate_totp(found_user_totp_key)
         except:
             return render_template('sign_in.html', message="The account doesn't exist.")
@@ -105,13 +107,15 @@ def signup():
             return render_template('signup.html', message="This email already exists")
         else:
             totp_key=generate_secret_totp_key()
+            get_key()
+            totp_key_user_side=encrypt(totp_key)
             ip=getip()
             user_pass=str(ip)+user_passw
             user_password=pbkdf2_sha256.hash(user_pass)
             salt_bytes = getsalt(user_password)
             user_password_browser_side=get_user_cred(salt_bytes,user_passw)
             collected_data=User(user_name, user_email, user_password, totp_key)
-            collected_data1=User1(user_name, user_email, user_password_browser_side, totp_key)
+            collected_data1=User1(user_name, user_email, user_password_browser_side, totp_key_user_side)
             db.session.add(collected_data)
             db.session.commit()
             db.session.add(collected_data1)
