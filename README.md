@@ -2,7 +2,7 @@
  <b>P.R.I.D.E</b>
  </h1>
 <h4 align="center">
- <p>Phishing Resistant Identicons</p>
+ Phishing Resistant Identicons
  </h4>
 
 <h2>Introduction</h2>
