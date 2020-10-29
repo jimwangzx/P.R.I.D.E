@@ -1,4 +1,4 @@
-# Crack-D
+# P.R.I.D.E
 
 <h2>Introduction</h2>
 <p> Identicons are visual representation of hash values. Usually they look something like these :</p><br>
