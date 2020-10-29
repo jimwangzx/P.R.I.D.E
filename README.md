@@ -1,4 +1,7 @@
-# P.R.I.D.E
+<p align="center">
+<h1><b>P.R.I.D.E</b><h1>
+ </p>
+
 
 <h2>Introduction</h2>
 <p> Identicons are visual representation of hash values. Usually they look something like these :</p><br>
