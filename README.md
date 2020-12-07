@@ -35,14 +35,14 @@
   
   For the complete list check <a href="requirements.txt">this</a>.</p>
 
-<h2>Drawbacks</h2>
+<h2>Possible Limitations</h2>
  <p>This implementation does change the user experience. Obviously, humans don't embrace change.</p>
- <p>Firstly, the user needs to store passwords in the device. Password managers come into the picture. They have gotten more common recently. From what I have seen, people rather depend on the password managers built into the browsers which are rather not that secure.
+ <p>Firstly, the user needs to store passwords in the device. Password managers provide a solution to this issue. But, people rather use the crappy password managers built into the browsers. The idea of "all eggs in one basket" seems to frighten them.
 </p>
   
    
 <h2>Comments</h2> 
-<p> Something is definitely wrong, but can't yet figure it out. It would be a mistake to believe this is foolproof. It would be good to find the possible flaws in this scheme which I can't just seem to figure out. Hence, if you have any suggestions or anything about how this isn't going to work at all, let me know. Open a PR, maybe.</p>
-<p> As of now, the implementation just shows how the system may work, it doesn't fetch credentials from a password manager to create identicons at the client side. It has proven to be challenging and I won't go that deep unless I am sure this scheme is foolproof. For testing purposes, I created another database which acts as a storage unit for credentials, imitating a password manager.</p>
+<p> If you have any suggestions or anything about how this isn't going to work at all, let me know. Open a PR, maybe.</p>
+<p> As of now, this implementation just shows how the system may work, it doesn't fetch credentials from a password manager to create identicons at the client side. It has proven to be challenging. For testing purposes, I created another database which acts as a storage unit for credentials, imitating a password manager.</p>
 
 
