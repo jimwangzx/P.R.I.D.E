@@ -5,6 +5,15 @@
  Phishing Resistant Identicons
  </h4>
 
+<p align="center">
+ <a href="https://www.python.org">
+  <img src="https://img.shields.io/badge/MADE%20WITH%20-Python-blueviolet">
+ </a>
+ <a href="https://www.gnu.org/licenses/gpl-3.0">
+  <img src="https://img.shields.io/badge/License-GPLv3-brightgreen.svg">
+ </a>
+</p>
+
 <h2>Introduction</h2>
 <p> Identicons are visual representation of hash values. Usually they look something like these :</p><br>
 
