@@ -54,4 +54,6 @@
 <p> If you have any suggestions or anything about how this isn't going to work at all, let me know. Open a PR, maybe.</p>
 <p> As of now, this implementation just shows how the system may work, it doesn't fetch credentials from a password manager to create identicons at the client side. It has proven to be challenging. For testing purposes, I created another database which acts as a storage unit for credentials, imitating a password manager.</p>
 
+<h2>License</h2>
 
+<a href="LICENSE">GPLv3</a>
